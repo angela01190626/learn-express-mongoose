@@ -11,6 +11,8 @@ function get_book(id) {
 
 function get_book_dtl(id) {
   return BookInstance
+          // The better way is to check id and findOne({'_id': {$eq: id}})
+          // As the get_book(id) method
           .find({ 'book': id })
           .select('imprint status');
 }
