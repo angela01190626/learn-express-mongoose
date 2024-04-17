@@ -12,6 +12,7 @@ function Login() {
     {
      try {
        const response = await axios.get('http://localhost:8001/csrf-token', { withCredentials: true });
+       console.log(response);
        setCsrfToken(response.data.csrfToken);
      } catch (error) {
        console.error('Error fetching CSRF token:', error);
@@ -22,7 +23,7 @@ function Login() {
     try {
       const response = await axios.get('http://localhost:8001/check-login', {
         headers: {
-          'X-CSRF-Token': csrfToken,
+          'x-csrf-token': csrfToken,
         },
         withCredentials: true,
       });
@@ -53,11 +54,11 @@ function Login() {
     try {
       const response = await axios.post('http://localhost:8001/login', { username, password }, {
         headers: {
-          'X-CSRF-Token': csrfToken,
+          'x-csrf-token': csrfToken,
         },
         withCredentials: true,
       });
-
+      console.log(response);
       setLoggedIn(response.data.success);
       setUser(response.data.user.username);
     } catch (error) {
@@ -69,13 +70,13 @@ function Login() {
     try {
       await axios.post('http://localhost:8001/logout', null, {
         headers: {
-          'X-CSRF-Token': csrfToken,
+          'x-csrf-token': csrfToken,
         },
         withCredentials: true,
       });
-
       setLoggedIn(false);
       setUser("");
+      setCsrfToken("");
     } catch (error) {
       console.error('Error logging out:', error);
     }
